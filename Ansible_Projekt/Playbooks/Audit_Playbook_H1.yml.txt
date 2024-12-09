@@ -1,0 +1,184 @@
+# [Host & Clients]
+sudo apt-get update && apt-get upgrade -y
+
+# [Host]
+sudo apt install -y ansible
+ansible --version
+ssh-keygen -t rsa -b 2048
+
+sudo apt-get install -y sshpass
+ssh-copy-id client1@IP
+ssh-copy-id client2@IP
+
+ssh client1@IP #exit
+ssh client2@IP #exit
+
+mkdir -p ~/ansible_project
+cd ~/ansible_project
+touch hosts.ini
+"
+[Host]
+IP ansible_user=host ansible_ssh_pass=host
+
+[Clients]
+IP ansible_user=client1 ansible_ssh_pass=client
+IP ansible_user=client2 ansible_ssh_pass=client
+"
+
+ansible Clients -m ping -i hosts.ini
+
+mkdir -p ~/ansible_project/playbooks
+mkdir -p ~/ansible_project/files
+mkdir -p ~/ansible_project/results/h1
+mkdir -p ~/ansible_project/results/h2
+
+
+touch ~/ansible_project/playbooks/audit_playbook_h1.yml
+
+Option 1
+"
+---
+- name: Automating Audit Scripts for Hardening Level 1
+  hosts: clients
+  become: yes
+  vars:
+    # Option: Provide password as plain text
+    ansible_become_pass: "client"  # Provide the plain text password here
+
+  tasks:
+    - name: Create directories on the Client
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/pass.txt"
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/fail.txt"
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit"
+
+    - name: Copy Automation script from Host to Clients (Hardening Level 1)
+      copy:
+        src: "/home/master/ansible_project/files/Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_H1.sh"
+        dest: "/Hardening_Scripts/Hardening_Ubuntu_22.04/"
+        mode: '0755'
+
+    - name: Copy scripts from Host to Client (Hardening Level 1)
+      copy:
+        src: "/home/master/ansible_project/files/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit/"
+        dest: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit/"
+        mode: '0755'
+
+
+
+    - name: Delete audit files on the Client
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/{{ inventory_hostname }}_audit_result_h1.txt"
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit/*"
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Automation_h1.sh"
+
+
+
+    - name: Execute Hardening Level 1 script on Client
+      command: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_H1.sh"
+      register: result
+
+    - name: Save audit results (Hardening Level 1)
+      copy:
+        content: "{{ result.stdout }}"
+        dest: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/{{ inventory_hostname }}_audit_result_h1.txt"
+
+    - name: Fetch the results (pass/fail) back to Host
+      fetch:
+        src: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/{{ inventory_hostname }}_audit_result_h1.txt"
+        dest: "/tmp/audit_results/h1/{{ inventory_hostname }}/"
+        flat: yes
+
+    - name: Fetch results and rename them in Host directory
+      command: |
+        mkdir -p ~/ansible_project/files/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/h1/{{ inventory_hostname }}
+        mv /tmp/audit_results/h1/{{ inventory_hostname }}_audit_result_h1.txt ~/ansible_project/files/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/h1/{{ inventory_hostname }}/audit_result_h1.txt
+"
+
+ansible-playbook -i hosts.ini playbooks/audit_playbook_h1.yml #--ask-become-pass
+
+
+
+nano playbooks/audit_playbook_h1.yml
+ansible-playbook -i hosts.ini playbooks/audit_playbook_h1.yml
+
+
+
+Option 2:
+"
+---
+- name: Automating Audit Scripts for Hardening Level 1
+  hosts: clients
+  become: yes
+  vars:
+    # Option: Provide password as plain text
+    ansible_become_pass: "client"  # Provide the plain text password here
+
+  tasks:
+    - name: Copy the entire Hardening_Scripts directory from Host to Client
+      copy:
+        src: "/home/master/ansible_project/files/"
+        dest: "/"
+        mode: '0755'
+
+    - name: Execute Hardening Level 1 script on Client with sudo
+      command: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_H1.sh"
+      become: yes
+      register: result
+"
+
+
+
+TEST
+
+---
+- name: Automating Audit Scripts for Hardening Level 1
+  hosts: clients
+  become: yes
+  vars:
+    # Option: Provide password as plain text
+    ansible_become_pass: "client"  # Provide the plain text password here
+
+  tasks:
+    - name: Execute Automation_h1.sh on Client
+      shell: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_h1.sh"
+      args:
+        chdir: "/Hardening_Scripts/Hardening_Ubuntu_22.04"
+      register: result
+
+    - name: Show the result of the Automation_h1.sh execution
+      debug:
+        var: result
+
+    - name: Execute Automation_H1.sh on Client using bash
+      shell: "bash /Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_H1.sh"
+      args:
+        chdir: "/Hardening_Scripts/Hardening_Ubuntu_22.04"
+      register: result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

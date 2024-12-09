@@ -1,0 +1,6 @@
+[Host]
+IP ansible_user=host ansible_ssh_pass=host
+
+[Clients]
+IP ansible_user=client1 ansible_ssh_pass=client
+IP ansible_user=client2 ansible_ssh_pass=client
