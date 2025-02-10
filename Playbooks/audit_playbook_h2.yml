@@ -1,0 +1,70 @@
+---
+- name: Automating Audit Scripts for Hardening Level 2
+  hosts: Clients
+  become: yes
+  vars:
+    ansible_become_pass: "client"
+    hardening_level: "H2"
+    user_home: "{{ lookup('env', 'HOME') }}"
+    results_dir: "{{ user_home }}/Ansible_Projekt/Results/{{ hardening_level }}"
+
+  tasks:
+    - name: Create directories on the Client
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results"
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit"
+
+    - name: Create empty pass.txt and fail.txt files
+      file:
+        path: "{{ item }}"
+        state: touch
+      with_items:
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/pass.txt"
+        - "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/fail.txt"
+
+    - name: Copy Automation script from Host to Clients (Hardening Level 2)
+      copy:
+        src: "/home/host/Ansible_Projekt/Files/Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_H2.sh"
+        dest: "/Hardening_Scripts/Hardening_Ubuntu_22.04/"
+        mode: '0755'
+
+    - name: Copy scripts from Host to Client (Hardening Level 2)
+      copy:
+        src: "/home/host/Ansible_Projekt/Files/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit/"
+        dest: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Scripts/Audit/"
+        mode: '0755'
+
+    - name: Execute Automation_H2.sh script
+      shell: "bash /Hardening_Scripts/Hardening_Ubuntu_22.04/Automation_H2.sh"
+      args:
+        chdir: "/Hardening_Scripts/Hardening_Ubuntu_22.04"
+      become: yes
+
+    - name: Ensure the results directory exists locally
+      local_action:
+        module: file
+        path: "{{ results_dir }}"
+        state: directory
+      run_once: true
+
+    - name: Fetch pass.txt from the Client
+      fetch:
+        src: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/pass.txt"
+        dest: "{{ results_dir }}/{{ inventory_hostname }}_pass.txt"
+        flat: yes
+
+    - name: Fetch fail.txt from the Client
+      fetch:
+        src: "/Hardening_Scripts/Hardening_Ubuntu_22.04/Results/fail.txt"
+        dest: "{{ results_dir }}/{{ inventory_hostname }}_fail.txt"
+        flat: yes
+
+    - name: Delete files on the Client
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "/Hardening_Scripts"

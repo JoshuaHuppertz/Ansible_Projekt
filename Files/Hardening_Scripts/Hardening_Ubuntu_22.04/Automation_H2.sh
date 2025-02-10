@@ -54,11 +54,13 @@ bash "$HARDENING_Audit/1.3.1.4.sh" #Level.2 Server
 bash "$HARDENING_Audit/1.7.1.sh" #Level.2 Server
 bash "$HARDENING_Audit/1.7.6.sh" #Level.2 Workstation
 bash "$HARDENING_Audit/1.7.7.sh" #Level.2 Workstation
+# 11
 # 2.1 Configure Server Services
 bash "$HARDENING_Audit/2.1.1.sh" #Level.2 Workstation
 bash "$HARDENING_Audit/2.1.2.sh" #Level.2 Workstation
 bash "$HARDENING_Audit/2.1.11.sh" #Level.2 Workstation
 bash "$HARDENING_Audit/2.1.20.sh" #Level.2 Server
+# 4
 # 3.1 Configure Network Devices
 bash "$HARDENING_Audit/3.1.3.sh" #Level.2 Workstation
 # 3.2 Configure Network Kernel Modules
@@ -66,6 +68,7 @@ bash "$HARDENING_Audit/3.2.1.sh"  #Level.2
 bash "$HARDENING_Audit/3.2.2.sh"  #Level.2
 bash "$HARDENING_Audit/3.2.3.sh"  #Level.2
 bash "$HARDENING_Audit/3.2.4.sh"  #Level.2
+# 5
 # 5.1 Configure SSH Server
 bash "$HARDENING_Audit/5.1.8.sh" #Level.2 Server
 bash "$HARDENING_Audit/5.1.9.sh" #Level.2 Server
@@ -80,6 +83,7 @@ bash "$HARDENING_Audit/5.3.3.1.3.sh" #Level.2
 bash "$HARDENING_Audit/5.4.1.2.sh" #Manual Level.2
 # 5.4.3 Configure user default environmen
 bash "$HARDENING_Audit/5.4.3.1.sh" #Level.2 
+# 6
 # 6.1 Configure Filesystem Integrity Checking
 bash "$HARDENING_Audit/6.1.3.sh" #Level.2
 # 6.3 System Auditing
@@ -125,4 +129,4 @@ bash "$HARDENING_Audit/6.3.4.7.sh" #Level.2
 bash "$HARDENING_Audit/6.3.4.8.sh" #Level.2
 bash "$HARDENING_Audit/6.3.4.9.sh" #Level.2
 bash "$HARDENING_Audit/6.3.4.10.sh" #Level.2
-        
+# 39

@@ -105,7 +105,7 @@ bash "$HARDENING_Audit/1.7.5.sh"
 bash "$HARDENING_Audit/1.7.8.sh"
 bash "$HARDENING_Audit/1.7.9.sh"
 bash "$HARDENING_Audit/1.7.10.sh"
-#
+# 53
 # 2.1 Configure Server Services
 bash "$HARDENING_Audit/2.1.3.sh"
 bash "$HARDENING_Audit/2.1.4.sh"
@@ -154,7 +154,7 @@ bash "$HARDENING_Audit/2.4.1.7.sh"
 bash "$HARDENING_Audit/2.4.1.8.sh"
 # 2.4.2 Configure at
 bash "$HARDENING_Audit/2.4.2.1.sh"
-#
+# 39
 # 3.1 Configure Network Devices
 bash "$HARDENING_Audit/3.1.1.sh"  #Manual
 bash "$HARDENING_Audit/3.1.2.sh"
@@ -170,7 +170,7 @@ bash "$HARDENING_Audit/3.3.8.sh"
 bash "$HARDENING_Audit/3.3.9.sh"
 bash "$HARDENING_Audit/3.3.10.sh"
 bash "$HARDENING_Audit/3.3.11.sh"
-#
+# 13
 # 4.1 Configure UncomplicatedFirewall
 bash "$HARDENING_Audit/4.1.1.sh"
 bash "$HARDENING_Audit/4.1.2.sh"
@@ -205,7 +205,7 @@ bash "$HARDENING_Audit/4.3.3.1.sh"
 bash "$HARDENING_Audit/4.3.3.2.sh"
 bash "$HARDENING_Audit/4.3.3.3.sh" #Manual
 bash "$HARDENING_Audit/4.3.3.4.sh"
-#
+# 28
 # 5.1 Configure SSH Server
 bash "$HARDENING_Audit/5.1.1.sh"
 bash "$HARDENING_Audit/5.1.2.sh"
@@ -285,7 +285,7 @@ bash "$HARDENING_Audit/5.4.2.8.sh"
 # 5.4.3 Configure user default environmen
 bash "$HARDENING_Audit/5.4.3.2.sh"
 bash "$HARDENING_Audit/5.4.3.3.sh"
-#
+# 65
 # 6.1 Configure Filesystem Integrity Checking
 bash "$HARDENING_Audit/6.1.1.sh"
 bash "$HARDENING_Audit/6.1.2.sh"
@@ -305,7 +305,7 @@ bash "$HARDENING_Audit/6.2.1.2.3.sh"
 bash "$HARDENING_Audit/6.2.1.2.4.sh"
 # 6.2.2 Configure Logfiles
 bash "$HARDENING_Audit/6.2.2.1.sh"
-#
+# 13
 # 7.1 System File Permissions
 bash "$HARDENING_Audit/7.1.1.sh"
 bash "$HARDENING_Audit/7.1.2.sh"
@@ -331,4 +331,4 @@ bash "$HARDENING_Audit/7.2.7.sh"
 bash "$HARDENING_Audit/7.2.8.sh"
 bash "$HARDENING_Audit/7.2.9.sh"
 bash "$HARDENING_Audit/7.2.10.sh"
-        
+# 23
